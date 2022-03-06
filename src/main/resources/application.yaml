@@ -1,3 +1,6 @@
+server:
+  port: 8088
+
 my-routes:
   urlMySchool: http://localhost:8081
   urlMyUser: http://localhost:8082
@@ -7,6 +10,29 @@ my-routes:
 spring:
   application:
     name: my-gateway
+  cloud:
+    gateway:
+      httpclient:
+        wiretap: true
+      httpserver:
+        wiretap: true
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            token-uri: http://localhost:8080/auth/realms/master/protocol/openid-connect/token
+            authorization-uri: http://localhost:8080/auth/realms/master/protocol/openid-connect/auth
+            userinfo-uri: http://localhost:8080/auth/realms/master/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
+        registration:
+          my-gateway:
+            provider: keycloak
+            client-id: my-gateway
+            client-secret: uKwzNfG1XM2rNZjiLQgIbVpnsUo5w3N5
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
+
 
 eureka:
   instance:
@@ -16,3 +42,12 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
     fetch-registry: true
     register-with-eureka: true
+
+logging:
+  level:
+    reactor:
+      netty: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE

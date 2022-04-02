@@ -1,0 +1,18 @@
+my-routes:
+  urlMySchool: http://localhost:8081
+  urlMyUser: http://localhost:8082
+  urlMyReport: http://localhost:8083
+
+
+spring:
+  application:
+    name: my-gateway
+
+eureka:
+  instance:
+    hostname: my-gateway
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
